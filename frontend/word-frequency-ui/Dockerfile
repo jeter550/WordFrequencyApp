@@ -8,7 +8,7 @@ COPY package*.json ./
 COPY .npmrc ./
 
 # Install dependencies
-RUN npm ci --verbose 2>&1 | head -100 || npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # Copy application files
 COPY . .
@@ -19,7 +19,7 @@ ENV API_URL=$API_URL
 ENV NODE_OPTIONS="--max-old-space-size=2048"
 
 # Build the application
-RUN npm run build -- --configuration development
+RUN npm run build
 
 # Stage 2: Runtime (Nginx)
 FROM nginx:alpine
