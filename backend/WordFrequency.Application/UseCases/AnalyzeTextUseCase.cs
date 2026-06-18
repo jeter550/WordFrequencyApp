@@ -76,7 +76,14 @@ public class AnalyzeTextUseCase : IWordFrequencyService
             Results = results
         };
 
-        await _repository.AddAsync(frequencyResult);
+        try
+        {
+            await _repository.AddAsync(frequencyResult);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to save analysis to database: {ex.Message}");
+        }
 
         return MapToResponse(frequencyResult);
     }

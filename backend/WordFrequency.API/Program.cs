@@ -37,10 +37,6 @@ app.UseRouting();
 app.UseCors("AllowAll");
 
 app.MapControllers();
-app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }))
-    .WithName("Health")
-    .WithOpenApi()
-    .ExcludeFromDescription();
 
 app.Run();
 
@@ -50,12 +46,23 @@ static async Task ApplyMigrationsAsync(WebApplication app)
     try
     {
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        await context.Database.MigrateAsync();
-        app.Logger.LogInformation("Database migrations applied successfully");
+        if (!await context.Database.CanConnectAsync())
+        {
+            await context.Database.EnsureCreatedAsync();
+            app.Logger.LogInformation("Database created successfully");
+        }
+        else
+        {
+            app.Logger.LogInformation("Database already exists and is accessible");
+        }
+    }
+    catch (Microsoft.Data.SqlClient.SqlException ex) when (ex.Number == 1801)
+    {
+        app.Logger.LogInformation("Database already exists, continuing");
     }
     catch (Exception ex)
     {
-        app.Logger.LogError(ex, "An error occurred while applying database migrations");
+        app.Logger.LogError(ex, "An error occurred while ensuring database");
         throw;
     }
 }
