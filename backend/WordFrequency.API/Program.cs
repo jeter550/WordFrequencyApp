@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using WordFrequency.Infrastructure.Data;
 using WordFrequency.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+await ApplyMigrationsAsync(app);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -39,3 +43,19 @@ app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = Dat
     .ExcludeFromDescription();
 
 app.Run();
+
+static async Task ApplyMigrationsAsync(WebApplication app)
+{
+    using var scope = app.Services.CreateAsyncScope();
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await context.Database.MigrateAsync();
+        app.Logger.LogInformation("Database migrations applied successfully");
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "An error occurred while applying database migrations");
+        throw;
+    }
+}
