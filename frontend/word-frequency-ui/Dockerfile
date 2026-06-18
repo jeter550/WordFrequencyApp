@@ -3,16 +3,23 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
+COPY .npmrc ./
 
-RUN npm install
+# Install dependencies
+RUN npm ci --verbose 2>&1 | head -100 || npm install --legacy-peer-deps
 
+# Copy application files
 COPY . .
 
+# Set environment variables for build
 ARG API_URL=http://localhost:5000/api
 ENV API_URL=$API_URL
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 
-RUN npm run build
+# Build the application
+RUN npm run build -- --configuration development
 
 # Stage 2: Runtime (Nginx)
 FROM nginx:alpine
