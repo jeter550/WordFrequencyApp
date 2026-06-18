@@ -1,13 +1,13 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartConfiguration, ChartData } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { AnalyzeResponse, WordCount } from '../../../../core/services/analysis.service';
 
 @Component({
   selector: 'app-frequency-chart',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, NgChartsModule],
   template: `
     <div class="chart-container" *ngIf="data">
       <div class="chart-controls">
