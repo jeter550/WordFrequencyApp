@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordFrequency.Domain", "WordFrequency.Domain\WordFrequency.Domain.csproj", "{896D5B70-884B-49F3-BF22-4E9211CF812A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordFrequency.Application", "WordFrequency.Application\WordFrequency.Application.csproj", "{8B17FAEC-9FC6-4E5A-BF8B-320C1879FD76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordFrequency.Infrastructure", "WordFrequency.Infrastructure\WordFrequency.Infrastructure.csproj", "{DD71FF64-E99F-4003-916F-754356DFA194}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordFrequency.API", "WordFrequency.API\WordFrequency.API.csproj", "{B0CD18A1-C7AE-4C0E-ADBE-1F8F9B77076D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{896D5B70-884B-49F3-BF22-4E9211CF812A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{896D5B70-884B-49F3-BF22-4E9211CF812A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{896D5B70-884B-49F3-BF22-4E9211CF812A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{896D5B70-884B-49F3-BF22-4E9211CF812A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B17FAEC-9FC6-4E5A-BF8B-320C1879FD76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B17FAEC-9FC6-4E5A-BF8B-320C1879FD76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B17FAEC-9FC6-4E5A-BF8B-320C1879FD76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B17FAEC-9FC6-4E5A-BF8B-320C1879FD76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD71FF64-E99F-4003-916F-754356DFA194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD71FF64-E99F-4003-916F-754356DFA194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD71FF64-E99F-4003-916F-754356DFA194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD71FF64-E99F-4003-916F-754356DFA194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0CD18A1-C7AE-4C0E-ADBE-1F8F9B77076D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0CD18A1-C7AE-4C0E-ADBE-1F8F9B77076D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0CD18A1-C7AE-4C0E-ADBE-1F8F9B77076D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0CD18A1-C7AE-4C0E-ADBE-1F8F9B77076D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
