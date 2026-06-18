@@ -27,4 +27,8 @@ export class AnalysisService {
   analyzeText(text: string): Observable<AnalyzeResponse> {
     return this.http.post<AnalyzeResponse>(this.apiUrl, { text });
   }
+
+  analyzeUrl(url: string): Observable<AnalyzeResponse> {
+    return this.http.post<AnalyzeResponse>(`${this.apiUrl}/url`, { url });
+  }
 }

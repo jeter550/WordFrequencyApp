@@ -5,4 +5,5 @@ using DTOs;
 public interface IWordFrequencyService
 {
     Task<AnalyzeTextResponse> AnalyzeTextAsync(string text);
+    Task<AnalyzeTextResponse> AnalyzeUrlAsync(string url);
 }
