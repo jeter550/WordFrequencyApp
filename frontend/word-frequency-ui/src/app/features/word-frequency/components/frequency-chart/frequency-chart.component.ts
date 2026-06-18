@@ -24,7 +24,7 @@ import { AnalyzeResponse, WordCount } from '../../../../core/services/analysis.s
       <div *ngIf="chartType === 'bar'" class="bar-chart-wrapper">
         <canvas
           baseChart
-          [type]="'barChart'"
+          [type]="'bar'"
           [data]="barChartData"
           [options]="barChartOptions"
           [plugins]="plugins"
@@ -35,7 +35,7 @@ import { AnalyzeResponse, WordCount } from '../../../../core/services/analysis.s
       <div *ngIf="chartType === 'bubble'" class="bubble-chart-wrapper">
         <canvas
           baseChart
-          [type]="'bubbleChart'"
+          [type]="'bubble'"
           [data]="bubbleChartData"
           [options]="bubbleChartOptions"
           [plugins]="plugins"
@@ -61,7 +61,9 @@ export class FrequencyChartComponent implements OnChanges {
       x: {
         beginAtZero: true,
         ticks: {
-          callback: (value) => Math.round(Number(value)).toString()
+          callback: (value: number | string, index: number, ticks: any[]) => {
+            return Math.round(Number(value)).toString();
+          }
         }
       }
     }
@@ -73,12 +75,10 @@ export class FrequencyChartComponent implements OnChanges {
     maintainAspectRatio: true,
     scales: {
       x: {
-        beginAtZero: true,
-        title: { display: true, text: 'Word Rank' }
+        beginAtZero: true
       },
       y: {
-        beginAtZero: true,
-        title: { display: true, text: 'Frequency' }
+        beginAtZero: true
       }
     }
   };
