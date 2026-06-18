@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: wfa-sqlserver
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: 'P@ssw0rd123'
+      MSSQL_PID: 'Express'
+    ports:
+      - '1433:1433'
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S sqlserver -U sa -P "P@ssw0rd123" -Q "SELECT 1" -C || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - wfa-network
+    volumes:
+      - sqlserver-data:/var/opt/mssql/data
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: wfa-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+      ConnectionStrings__DefaultConnection: 'Server=sqlserver,1433;Initial Catalog=WordFrequencyDb;User Id=sa;Password=P@ssw0rd123;Encrypt=false;TrustServerCertificate=true'
+    ports:
+      - '5000:5000'
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    healthcheck:
+      test: curl --fail http://localhost:5000/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - wfa-network
+
+  frontend:
+    build:
+      context: ./frontend/word-frequency-ui
+      dockerfile: Dockerfile
+      args:
+        API_URL: http://localhost:5000/api
+    container_name: wfa-frontend
+    ports:
+      - '4200:80'
+    depends_on:
+      - api
+    healthcheck:
+      test: curl --fail http://localhost:80 || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - wfa-network
+
+networks:
+  wfa-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
