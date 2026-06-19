@@ -43,3 +43,4 @@ logs/
 # Dependencies
 packages/
 .nuget/
+.claude/settings.local.json
