@@ -5,6 +5,7 @@ using Domain.Interfaces;
 using Domain.ValueObjects;
 using DTOs;
 using Interfaces;
+using Microsoft.Extensions.Logging;
 
 public class AnalyzeTextUseCase : IWordFrequencyService
 {
@@ -12,17 +13,20 @@ public class AnalyzeTextUseCase : IWordFrequencyService
     private readonly IAnalysisRepository _repository;
     private readonly IUrlFetcherService _urlFetcher;
     private readonly IHtmlParserService _htmlParser;
+    private readonly ILogger<AnalyzeTextUseCase> _logger;
 
     public AnalyzeTextUseCase(
         IWordFrequencyAnalyzer analyzer,
         IAnalysisRepository repository,
         IUrlFetcherService urlFetcher,
-        IHtmlParserService htmlParser)
+        IHtmlParserService htmlParser,
+        ILogger<AnalyzeTextUseCase> logger)
     {
         _analyzer = analyzer;
         _repository = repository;
         _urlFetcher = urlFetcher;
         _htmlParser = htmlParser;
+        _logger = logger;
     }
 
     public async Task<AnalyzeTextResponse> AnalyzeTextAsync(string text)
@@ -49,12 +53,9 @@ public class AnalyzeTextUseCase : IWordFrequencyService
                 onFailure: error => throw new ArgumentException($"Extracted text is invalid: {error}")
             );
         }
-        catch (ArgumentException)
+        catch (Exception ex) when (ex is not ArgumentException)
         {
-            throw;
-        }
-        catch (Exception ex)
-        {
+            _logger.LogError(ex, "Failed to analyze URL: {url}", url);
             throw new InvalidOperationException($"Failed to analyze URL: {ex.Message}", ex);
         }
     }
@@ -76,14 +77,7 @@ public class AnalyzeTextUseCase : IWordFrequencyService
             Results = results
         };
 
-        try
-        {
-            await _repository.AddAsync(frequencyResult);
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Failed to save analysis to database: {ex.Message}");
-        }
+        await _repository.AddAsync(frequencyResult);
 
         return MapToResponse(frequencyResult);
     }
