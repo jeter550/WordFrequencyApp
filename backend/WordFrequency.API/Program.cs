@@ -46,23 +46,12 @@ static async Task ApplyMigrationsAsync(WebApplication app)
     try
     {
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        if (!await context.Database.CanConnectAsync())
-        {
-            await context.Database.EnsureCreatedAsync();
-            app.Logger.LogInformation("Database created successfully");
-        }
-        else
-        {
-            app.Logger.LogInformation("Database already exists and is accessible");
-        }
-    }
-    catch (Microsoft.Data.SqlClient.SqlException ex) when (ex.Number == 1801)
-    {
-        app.Logger.LogInformation("Database already exists, continuing");
+        await context.Database.MigrateAsync();
+        app.Logger.LogInformation("Database migrations applied successfully");
     }
     catch (Exception ex)
     {
-        app.Logger.LogError(ex, "An error occurred while ensuring database");
+        app.Logger.LogError(ex, "An error occurred while applying database migrations");
         throw;
     }
 }
