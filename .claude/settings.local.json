@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "Bash(Get-ChildItem -Force)",
-      "Bash(dotnet build *)"
+      "Bash(dotnet build *)",
+      "Skill(deep-research)",
+      "Skill(deep-research:*)",
+      "WebSearch",
+      "WebFetch(domain:barretblake.dev)",
+      "WebFetch(domain:code-maze.com)",
+      "Bash(curl -s http://localhost:5000/health)",
+      "Bash(curl -s -X POST http://localhost:5000/api/analysis -H 'Content-Type: application/json' -d '{\"text\":\"hello world hello test\"}')",
+      "Bash(curl -s -X POST http://localhost:5000/api/analysis -H 'Content-Type: application/json' -d '{\"text\":\"\"}')",
+      "Bash(docker compose *)",
+      "Bash(docker volume *)",
+      "Bash(curl -s -X POST http://localhost:5000/api/analysis -H 'Content-Type: application/json' -d '{\"text\":\"hello world hello test hello database\"}')",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }

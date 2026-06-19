@@ -49,6 +49,10 @@ static async Task ApplyMigrationsAsync(WebApplication app)
         await context.Database.MigrateAsync();
         app.Logger.LogInformation("Database migrations applied successfully");
     }
+    catch (Microsoft.Data.SqlClient.SqlException ex) when (ex.Number == 1801)
+    {
+        app.Logger.LogInformation("Database already exists, migrations skipped");
+    }
     catch (Exception ex)
     {
         app.Logger.LogError(ex, "An error occurred while applying database migrations");
